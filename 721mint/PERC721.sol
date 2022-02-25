@@ -1,15 +1,18 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.6.0 <0.8.0;
+pragma solidity >=0.8.0 <0.9.0;
 
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/solc-0.6/contracts/token/ERC721/ERC721.sol";
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/solc-0.6/contracts/utils/Counters.sol";
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/solc-0.6/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract PizzapNFT is ERC721, Ownable {
+contract PERC721 is ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 
-    constructor() ERC721("PizzapNFT", "PizzapNFT") public {
+    uint256 public ethFee;
+
+    constructor(uint256 _ethFee) ERC721("PERC721", "PERC721") {
+        ethFee = _ethFee;
     }
 
     function create(address player, string memory tokenURI)
@@ -17,6 +20,12 @@ contract PizzapNFT is ERC721, Ownable {
         payable
         returns (uint256)
     {
+        if (ethFee > 0) {
+            require(msg.value == ethFee, "error fee value");
+            (bool sent, ) = address(this).call{value: ethFee}("");
+            require(sent, "Failed to send ETH");
+        }
+
         _tokenIds.increment();
 
         uint256 newId = _tokenIds.current();
@@ -42,6 +51,4 @@ contract PizzapNFT is ERC721, Ownable {
         require(address(this).balance > 0, "balance zero");
         payable(owner()).transfer(address(this).balance);
     }
-
-    
 }
