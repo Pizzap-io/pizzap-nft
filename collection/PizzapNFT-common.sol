@@ -26,7 +26,7 @@ contract PizzapNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     
     address randomizerAddress; // Approved randomizer contract
     address mintvialAddress; // Approved mintvial contract
-    string public _tokenUri = "https://PizzapNFT-assets.rtfkt.com/"; // Initial base URI
+    string public _tokenUri = "https://pizzap.io/api/metadata/"; // Initial base URI
     
     bool public contractLocked = false;
 
