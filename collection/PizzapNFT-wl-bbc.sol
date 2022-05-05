@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract PizzapNFT is ERC721Enumerable, Ownable {
+contract BabyBunnyClub is ERC721Enumerable, Ownable {
     using Strings for uint256;
 
     uint256 public constant PizzapNFT_GIFT = 120;
@@ -32,7 +32,7 @@ contract PizzapNFT is ERC721Enumerable, Ownable {
     bool public saleLive;
     bool public locked;
     
-    constructor() ERC721("PizzapNFT", "PizzapNFT") { }
+    constructor() ERC721("BabyBunnyClub", "BabyBunnyClub") { }
     
     modifier notLocked {
         require(!locked, "Contract metadata methods are locked");
