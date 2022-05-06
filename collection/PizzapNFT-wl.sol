@@ -18,6 +18,7 @@ contract PizzapNFT is ERC721Enumerable, Ownable {
     
     mapping(address => bool) public presalerList;
     mapping(address => uint256) public presalerListAmount;
+    mapping(address => bool) public presalerListMinted;
     mapping(string => bool) private _usedNonces;
     
     string private _contractURI;
@@ -105,6 +106,7 @@ contract PizzapNFT is ERC721Enumerable, Ownable {
     function presaleBuy() external  {
         require(!saleLive && presaleLive, "PRESALE_CLOSED");
         require(presalerList[msg.sender], "NOT_QUALIFIED");
+        require(!presalerListMinted[msg.sender], "ALREADY_MINTED");
         require(totalSupply() < PizzapNFT_MAX, "OUT_OF_STOCK");
         
         uint256  tokenQuantity = presalerListAmount[msg.sender];
@@ -112,6 +114,7 @@ contract PizzapNFT is ERC721Enumerable, Ownable {
             privateAmountMinted++;
             _safeMint(msg.sender, totalSupply() + 1);
         }
+        presalerListMinted[msg.sender] = true;
     }
     
     function gift(address[] calldata receivers, uint256[] calldata quantities) external onlyOwner {
